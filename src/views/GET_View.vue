@@ -1,24 +1,28 @@
 <template>
   <div>
-    <h2 class="title">SMS History List</h2>
-    <table class="table table-bordered table-striped mt-4">
-      <thead class="thead-light">
-        <tr>
-          <th>ID</th>
-          <th>Sender</th>
-          <th>Receiver</th>
-          <th>Text</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(sms, smsId) in smsList" :key="smsId" class="table-info">
-          <td class="fw-bold text-primary">{{ smsId }}</td>
-          <td>{{ parseSmsText(sms).from || "N/A" }}</td>
-          <td>{{ parseSmsText(sms).to || "N/A" }}</td>
-          <td>{{ parseSmsText(sms).text || "No text available" }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="card mx-auto" style="max-width: 4000px">
+      <div class="card-body">
+        <h2 class="title">SMS History List</h2>
+        <table class="table table-bordered table-striped mt-4">
+          <thead class="thead-light">
+            <tr>
+              <th>ID</th>
+              <th>Sender</th>
+              <th>Receiver</th>
+              <th>Text</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(sms, smsId) in smsList" :key="smsId" class="table-info">
+              <td class="fw-bold text-primary">{{ smsId }}</td>
+              <td>{{ parseSmsText(sms).from || "N/A" }}</td>
+              <td>{{ parseSmsText(sms).to || "N/A" }}</td>
+              <td>{{ parseSmsText(sms).text || "No text available" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 

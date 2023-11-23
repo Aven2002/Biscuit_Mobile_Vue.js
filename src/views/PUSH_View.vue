@@ -1,44 +1,59 @@
 <template>
-  <div class="push-view">
-    <h2 class="title">Send a SMS</h2>
-    <!-- Display alert message if it exists -->
-    <div
-      v-if="alertMessage"
-      class="alert alert-success rounded small-alert"
-      role="alert"
-    >
-      {{ alertMessage }}
+  <div class="push-view text-center mt-5">
+    <div class="card mx-auto" style="max-width: 400px">
+      <div class="card-body">
+        <h2 class="card-title text-center mb-4">Send a SMS</h2>
+
+        <!-- Display alert message if it exists -->
+        <div
+          v-if="alertMessage"
+          class="alert alert-success rounded small-alert"
+          role="alert"
+        >
+          {{ alertMessage }}
+        </div>
+
+        <form @submit.prevent="addSms">
+          <div class="form-group">
+            <label for="smsSender">Sender:</label>
+            <input
+              type="text"
+              id="smsSender"
+              v-model="smsSender"
+              required
+              class="form-control"
+              placeholder="Enter sender's name..."
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="smsReceiver">Receiver:</label>
+            <input
+              type="text"
+              id="smsReceiver"
+              v-model="smsReceiver"
+              required
+              class="form-control"
+              placeholder="Enter receiver's name..."
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="smsText">SMS Text:</label>
+            <input
+              type="text"
+              id="smsText"
+              v-model="smsText"
+              required
+              class="form-control"
+              placeholder="Enter your SMS text..."
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Send</button>
+        </form>
+      </div>
     </div>
-    <form @submit.prevent="addSms" class="sms-form">
-      <label for="smsSender" class="label">Sender:</label>
-      <input
-        type="text"
-        id="smsSender"
-        v-model="smsSender"
-        required
-        class="input"
-        placeholder="Enter sender's name..."
-      />
-      <label for="smsReceiver" class="label">Receiver:</label>
-      <input
-        type="text"
-        id="smsReceiver"
-        v-model="smsReceiver"
-        required
-        class="input"
-        placeholder="Enter receiver's name..."
-      />
-      <label for="smsText" class="label">SMS Text:</label>
-      <input
-        type="text"
-        id="smsText"
-        v-model="smsText"
-        required
-        class="input"
-        placeholder="Enter your SMS text..."
-      />
-      <button type="submit" class="btn btn-success">Send</button>
-    </form>
   </div>
 </template>
 
@@ -125,10 +140,11 @@ export default {
   border-radius: 5px;
   font-size: 16px;
 }
+
 .alert {
   font-size: 12px; /* Adjust the font size as needed */
   padding: 15px; /* Adjust the padding as needed */
-  margin-left: 410px;
-  margin-right: 410px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 </style>

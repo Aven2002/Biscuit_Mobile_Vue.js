@@ -1,21 +1,25 @@
 <template>
-  <div class="delete-view">
-    <h2 class="title">Delete SMS</h2>
-    <form @submit.prevent="deleteSms" class="sms-form">
-      <div v-if="alertMessage" class="alert alert-danger" role="alert">
-        {{ alertMessage }}
+  <div class="delete-view text-center mt-5">
+    <div class="card mx-auto" style="max-width: 400px">
+      <div class="card-body">
+        <h2 class="title">Delete SMS</h2>
+        <form @submit.prevent="deleteSms" class="sms-form">
+          <div v-if="alertMessage" class="alert alert-danger" role="alert">
+            {{ alertMessage }}
+          </div>
+          <label for="smsId" class="label">SMS ID:</label>
+          <input
+            type="text"
+            id="smsId"
+            v-model="smsId"
+            required
+            class="input"
+            placeholder="Enter the SMS ID..."
+          />
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
       </div>
-      <label for="smsId" class="label">SMS ID:</label>
-      <input
-        type="text"
-        id="smsId"
-        v-model="smsId"
-        required
-        class="input"
-        placeholder="Enter the SMS ID..."
-      />
-      <button type="submit" class="btn btn-danger">Delete</button>
-    </form>
+    </div>
   </div>
 </template>
 
