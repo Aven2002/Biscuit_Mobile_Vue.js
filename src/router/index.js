@@ -27,6 +27,11 @@ const routes = [
     name: "delete",
     component: () => import("../views/DELETE_View.vue"),
   },
+  {
+    path: "/SEARCH",
+    name: "search",
+    component: () => import("../views/SEARCH_View.vue"),
+  },
 ];
 
 const router = createRouter({

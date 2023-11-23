@@ -32,6 +32,9 @@
             <router-link to="/get" class="nav-link" @click="hideDropdown"
               >GET</router-link
             >
+            <router-link to="/search" class="nav-link" @click="hideDropdown"
+              >SEARCH</router-link
+            >
             <router-link to="/push" class="nav-link" @click="hideDropdown"
               >PUSH</router-link
             >
