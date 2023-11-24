@@ -3,9 +3,9 @@
     <div class="card mx-auto" style="max-width: 400px">
       <div class="card-body">
         <h2 class="title">Delete SMS</h2>
-        <form @submit.prevent="deleteSms" class="sms-form">
+        <form @submit.prevent="verifySms" class="sms-form">
           <div v-if="alertMessage" class="alert alert-danger" role="alert">
-            SMS Successfully Deleted !
+            {{ alertMessage }}
           </div>
           <label for="smsId" class="label">SMS ID:</label>
           <input
@@ -28,7 +28,7 @@
               <button
                 type="button"
                 class="close"
-                @click="closeModal"
+                @click="closeErrorModal"
                 aria-label="Close"
               >
                 <span aria-hidden="true">&times;</span>
@@ -36,18 +36,17 @@
             </div>
             <div class="modal-body">
               <img
-                src="../assets/ErrorIcon.png"
+                src="../assets/DbErrors.png"
                 alt="Error_Icon"
                 style="max-width: 30%; height: auto; margin-bottom: 20px"
               />
-
               <p>Invalid SMS ID. Please enter a valid ID.</p>
             </div>
             <div class="modal-footer">
               <button
                 type="button"
                 class="btn btn-secondary"
-                @click="closeModal"
+                @click="closeErrorModal"
               >
                 Close
               </button>
@@ -55,7 +54,47 @@
           </div>
         </div>
       </div>
-      <!-- End Bootstrap Modal -->
+      <!-- End Bootstrap Modal for Invalid ID -->
+
+      <!-- Bootstrap Modal for Confirmation -->
+      <div class="modal" id="confirmationModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Confirmation</h5>
+              <button
+                type="button"
+                class="close"
+                @click="closeConfirmationModal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <img
+                src="../assets/DbDelete.png"
+                alt="Delete_Icon"
+                style="max-width: 30%; height: auto; margin-bottom: 20px"
+              />
+              <p>Are you sure you want to delete this SMS?</p>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                @click="closeConfirmationModal"
+              >
+                Cancel
+              </button>
+              <button type="button" class="btn btn-danger" @click="deleteSms">
+                Confirm Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Bootstrap Modal for Confirmation -->
     </div>
   </div>
 </template>
@@ -68,52 +107,87 @@ export default {
   data() {
     return {
       smsId: "",
-      isSuccess: false,
+      alertMessage: "",
     };
   },
   methods: {
-    async deleteSms() {
+    async verifySms() {
       if (!this.smsId.trim()) {
-        // Set an alert message if the SMS ID is empty
         this.alertMessage = "SMS ID cannot be empty!";
         return;
       }
 
       try {
-        // Make a DELETE request to delete SMS from the database
-        const response = await this.$axios.delete(
-          "http://localhost:5678/sms/delete",
+        // Make a request to verify if the SMS with the given ID exists
+        const response = await this.$axios.get(
+          "http://localhost:5678/sms/get",
           {
             params: { id: this.smsId },
           }
         );
 
-        console.log("API Response:", response.data);
+        console.log("Verification Response:", response.data);
 
-        this.isSuccess = response.data.isSuccess;
-
-        if (this.isSuccess) {
-          this.alertMessage = "Successfully Deleted!";
-          // Optionally, you can handle the response or reset the form
-          this.smsId = "";
-          toastr.success("Successfully Deleted SMS!", "Notice");
+        if (response.data) {
+          // If the ID is valid, show the confirmation modal
+          this.showConfirmationModal();
         } else {
-          this.showModal();
-          this.alertMessage = "";
+          // If the ID is invalid, show the error modal
+          this.showErrorModal();
         }
       } catch (error) {
-        console.error("Error deleting SMS:", error);
+        if (error.response && error.response.status === 404) {
+          // If the server responds with a 404 status code, show the error modal
+          this.showErrorModal();
+        } else {
+          console.error("Error verifying SMS ID:", error);
+        }
       }
     },
-    showModal() {
+    async deleteSms() {
+      // Make a DELETE request to delete SMS from the database
+      const response = await this.$axios.delete(
+        "http://localhost:5678/sms/delete",
+        {
+          params: { id: this.smsId },
+        }
+      );
+
+      console.log("API Response:", response.data);
+
+      if (response.data.isSuccess) {
+        this.alertMessage = "Successfully Deleted!";
+        this.smsId = "";
+        toastr.success("Successfully Deleted SMS!", "Notice");
+      } else {
+        this.alertMessage = "Failed to delete SMS.";
+      }
+
+      this.closeConfirmationModal();
+    },
+    showErrorModal() {
       const modal = document.getElementById("invalidIdModal");
       if (modal) {
         modal.classList.add("show");
         modal.style.display = "block";
       }
     },
-    closeModal() {
+    showConfirmationModal() {
+      const modal = document.getElementById("confirmationModal");
+      if (modal) {
+        modal.classList.add("show");
+        modal.style.display = "block";
+      }
+    },
+    closeErrorModal() {
       const modal = document.getElementById("invalidIdModal");
+      if (modal) {
+        modal.classList.remove("show");
+        modal.style.display = "none";
+      }
+    },
+    closeConfirmationModal() {
+      const modal = document.getElementById("confirmationModal");
       if (modal) {
         modal.classList.remove("show");
         modal.style.display = "none";

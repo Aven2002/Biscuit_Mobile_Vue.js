@@ -34,7 +34,7 @@
               </div>
               <div class="modal-body">
                 <img
-                  src="../assets/ErrorIcon.png"
+                  src="../assets/DbErrors.png"
                   alt="Error_Icon"
                   style="max-width: 30%; height: auto; margin-bottom: 20px"
                 />
