@@ -7,7 +7,7 @@
         <!-- Alert message for invalid ID using alert -->
         <div class="form-container">
           <div v-if="alertMessage" class="alert alert-warning" role="alert">
-            {{ alertMessage }}
+            SMS Successfully Edited !
           </div>
 
           <form @submit.prevent="getSmsData" class="sms-form">
@@ -22,6 +22,38 @@
             />
             <button type="submit" class="btn btn-info">Get SMS Data</button>
           </form>
+
+          <!-- Bootstrap Modal for Invalid ID -->
+          <div class="modal" id="invalidIdModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Invalid ID</h5>
+                  <button
+                    type="button"
+                    class="close"
+                    @click="closeModal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Invalid SMS ID. Please enter a valid ID.</p>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    @click="closeModal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Bootstrap Modal -->
 
           <!-- Display the form only if smsData is available -->
           <form v-if="smsData" @submit.prevent="editSms" class="sms-form">
@@ -69,9 +101,6 @@ export default {
       editTo: "",
       editText: "",
       smsData: null,
-      invalidId: false,
-      invalidIdMessage: "",
-      alertMessage: "", // New data property for alert message
     };
   },
   methods: {
@@ -81,7 +110,6 @@ export default {
         this.alertMessage = "SMS ID cannot be empty!";
         return;
       }
-
       try {
         // Make a GET request to fetch SMS data from the database
         const response = await this.$axios.get(
@@ -97,14 +125,26 @@ export default {
           this.editText = this.smsData.text;
           this.invalidId = false;
         } else {
-          // If ID is invalid, show alert
           this.invalidId = true;
-          this.invalidIdMessage = "Invalid SMS ID. Please enter a valid ID.";
-          this.smsData = null;
-          this.alertMessage = "Invalid SMS ID. Please enter a valid ID."; // Alert for invalid ID
+          this.showModal();
         }
       } catch (error) {
         console.error("Error fetching SMS data:", error);
+      }
+    },
+    showModal() {
+      const modal = document.getElementById("invalidIdModal");
+      if (this.invalidId) {
+        modal.classList.add("show");
+        modal.style.display = "block";
+      }
+    },
+
+    closeModal() {
+      const modal = document.getElementById("invalidIdModal");
+      if (modal) {
+        modal.classList.remove("show");
+        modal.style.display = "none";
       }
     },
     async editSms() {
@@ -176,5 +216,60 @@ export default {
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 16px;
+}
+/* Modal styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-dialog {
+  position: relative;
+  margin: 10% auto;
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content {
+  position: relative;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Close button in modal header */
+.close {
+  font-size: 24px;
+  color: #555;
+}
+
+/* Button in modal footer */
+.modal-footer button {
+  background-color: #4285f4; /* Google Blue */
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Hover effect for buttons */
+.btn:hover,
+.modal-footer button:hover {
+  background-color: #0d47a1; /* Darker shade of Google Blue */
+}
+
+/* Justify the display results */
+.result {
+  text-align: justify;
 }
 </style>
