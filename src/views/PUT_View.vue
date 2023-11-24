@@ -28,7 +28,7 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">Invalid ID</h5>
+                  <h5 class="modal-title">Error Message</h5>
                   <button
                     type="button"
                     class="close"
@@ -39,6 +39,12 @@
                   </button>
                 </div>
                 <div class="modal-body">
+                  <img
+                    src="../assets/ErrorIcon.png"
+                    alt="Error_Icon"
+                    style="max-width: 30%; height: auto; margin-bottom: 20px"
+                  />
+
                   <p>Invalid SMS ID. Please enter a valid ID.</p>
                 </div>
                 <div class="modal-footer">
@@ -217,57 +223,55 @@ export default {
   border-radius: 5px;
   font-size: 16px;
 }
-/* Modal styling */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-}
 
-.modal-dialog {
-  position: relative;
-  margin: 10% auto;
-  padding: 20px;
-  width: 80%;
-  max-width: 500px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
+/* Modal content text styling */
 .modal-content {
   position: relative;
   border-radius: 12px;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #f5f5f5; /* Light grey background */
+  padding: 20px; /* Add padding for better spacing */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+}
+
+.modal-title {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.modal-body {
+  font-size: 18px;
+  color: #555;
+  line-height: 1.6; /* Adjust line height for better readability */
 }
 
 /* Close button in modal header */
 .close {
-  font-size: 24px;
-  color: #555;
+  font-size: 50px;
+  color: #2f2f2f;
+  cursor: pointer;
+  background-color: #f5f5f5;
+  border: none;
+  border-radius: 50%;
 }
 
 /* Button in modal footer */
 .modal-footer button {
-  background-color: #4285f4; /* Google Blue */
+  background-color: #e74c3c;
   color: #fff;
   border: none;
   padding: 12px 20px;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 /* Hover effect for buttons */
 .btn:hover,
 .modal-footer button:hover {
-  background-color: #0d47a1; /* Darker shade of Google Blue */
+  background-color: #c0392b;
 }
-
 /* Justify the display results */
 .result {
   text-align: justify;
