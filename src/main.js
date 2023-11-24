@@ -7,6 +7,7 @@ import "bootstrap-icons/font/bootstrap-icons.css"; // Import Bootstrap Icons
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Import Bootstrap JavaScript
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle";
+import "toastr/build/toastr.min.css";
 
 // Create the Vue app instance
 const app = createApp(App);
