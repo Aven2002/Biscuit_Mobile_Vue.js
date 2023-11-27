@@ -86,6 +86,15 @@
       </div>
     </nav>
     <router-view @beforeRouteUpdate="hideDropdown" />
+    <!-- Footer Section -->
+    <footer
+      class="footer mt-auto py-3"
+      style="background-color: #333; color: #fff; text-align: center"
+    >
+      <div class="container">
+        <span>&copy; 2023 Biscuit Mobile. All rights reserved.</span>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -160,5 +169,10 @@ export default {
   display: block;
   width: 100%;
   text-align: left;
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 </style>
