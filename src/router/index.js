@@ -15,7 +15,7 @@ const routes = [
   {
     path: "/PUSH",
     name: "push",
-    component: () => import("../views/PUSH_View.vue"),
+    component: () => import("../views/POST_View.vue"),
   },
   {
     path: "/PUT",
